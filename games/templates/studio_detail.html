@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card shadow-sm border-0 mb-4">
+  {% if studio.wallpaper %}
+    <img src="{{ studio.wallpaper.url }}" class="card-img-top" alt="{{ studio.name }} wallpaper" style="max-height:280px;object-fit:cover;">
+  {% endif %}
+  <div class="card-body p-4 p-md-5">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      {% if studio.logo %}
+        <img src="{{ studio.logo.url }}" alt="{{ studio.name }} logo" class="rounded-circle border shadow-sm" width="72" height="72" style="object-fit:cover;">
+      {% endif %}
+      <div>
+        <h1 class="h2 fw-bold mb-1">{{ studio.name }}</h1>
+        <div class="text-muted">{{ studio.country }}{% if studio.founding_year %} • Founded {{ studio.founding_year }}{% endif %}{% if studio.age %} • Age {{ studio.age }}{% endif %}</div>
+      </div>
+    </div>
+    {% if studio.description %}
+      <p class="mb-4">{{ studio.description }}</p>
+    {% endif %}
+    <h2 class="h4 fw-bold mb-3">Games</h2>
+    <div class="row g-3">
+      {% for game in games %}
+        <div class="col-md-6 col-lg-4">
+          <a href="{% url 'games:game_detail' game.pk %}" class="text-decoration-none">
+            <div class="card h-100 tile-card">
+              <img src="{{ game.thumbnail.url }}" class="card-img-top" alt="{{ game.title }}" style="height:180px;object-fit:cover;">
+              <div class="card-body">
+                <h3 class="h6 mb-1">{{ game.title }}</h3>
+                <div class="text-muted small">{{ game.genre.name }}</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% empty %}
+        <div class="col-12"><p class="text-muted mb-0">No games listed for this studio.</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
